@@ -1,6 +1,10 @@
 #!/usr/bin/python3
-# 0-square.py by Esidene Alicha
-"""Defines a square """
+
+"""Define a class Square."""
+
+
 class Square:
-    """Does nothing"""
-          pass
+
+    """Represent a square."""
+
+    pass
