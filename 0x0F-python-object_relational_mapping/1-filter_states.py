@@ -1,20 +1,26 @@
 #!/usr/bin/python3
-"""1-filter_states module
-Lists all states with a name starting with N (upper N) from the database
-hbtn_0e_0_usa
-"""
+'''Prints all rows in the states table of a database with
+a name starting with 'N'.
+'''
+import sys
+import MySQLdb
 
-if __name__ == "__main__":
-    import MySQLdb
-    from sys import argv
 
-    with MySQLdb.connect(host="localhost", user=argv[1], passwd=argv[2],
-                         db=argv[3], port=3306) as db:
-        db.execute("SELECT *\
-                   FROM states\
-                   WHERE name\
-                   LIKE BINARY 'N%'\
-                   ORDER BY id ASC")
-        table = db.fetchall()
-        for data in table:
-            print(data)
+if __name__ == '__main__':
+    if len(sys.argv) >= 4:
+        db_connection = MySQLdb.connect(
+            host='localhost',
+            port=3306,
+            user=sys.argv[1],
+            passwd=sys.argv[2],
+            db=sys.argv[3]
+        )
+        cursor = db_connection.cursor()
+        cursor.execute(
+            'SELECT * FROM states WHERE name IS NOT NULL AND' +
+            ' LEFT(CAST(name AS BINARY), 1) = "N" ORDER BY states.id ASC;'
+        )
+        results = cursor.fetchall()
+        for result in results:
+            print(result)
+        db_connection.close()
